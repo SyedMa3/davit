@@ -39,7 +39,7 @@ from timm.utils import ApexScaler, NativeScaler
 # from torch.distributed.elastic.multiprocessing.errors import record
 from thop import profile, clever_format
 from fvcore.nn import FlopCountAnalysis, flop_count_table, flop_count_str
-
+import dataloader
 
 try:
     from apex import amp
@@ -520,12 +520,20 @@ def main():
         _logger.info('Scheduled epochs: {}'.format(num_epochs))
 
     # create the train and eval datasets
-    dataset_train = create_dataset(
-        args.dataset,
-        root=args.data_dir, split=args.train_split, is_training=True,
-        batch_size=args.batch_size, repeats=args.epoch_repeats)
-    dataset_eval = create_dataset(
-        args.dataset, root=args.data_dir, split=args.val_split, is_training=False, batch_size=args.batch_size)
+    dataset = dataloader.CholecT50(
+            dataset_dir=args.data_dir, 
+            dataset_variant='cholect50',
+            test_fold=1,
+            augmentation_list=None
+            )
+    
+    dataset_train, dataset_eval, dataset_test = dataset.build()
+    # dataset_train = create_dataset(
+    #     args.dataset,
+    #     root=args.data_dir, split=args.train_split, is_training=True,
+    #     batch_size=args.batch_size, repeats=args.epoch_repeats)
+    # dataset_eval = create_dataset(
+    #     args.dataset, root=args.data_dir, split=args.val_split, is_training=False, batch_size=args.batch_size)
 
     # setup mixup / cutmix
     collate_fn = None
