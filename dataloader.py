@@ -238,7 +238,7 @@ class T50(Dataset):
             image = self.transform(image)
         if self.target_transform:
             labels = self.target_transform(labels)
-        return image, torch.Tensor(labels)
+        return image, labels
 
 if __name__ == "__main__":
     print("Refers to https://github.com/CAMMA-public/cholect45 for the usage guide.")
