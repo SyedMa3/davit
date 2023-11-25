@@ -288,7 +288,7 @@ class FastCollateMixup(Mixup):
             mixed = batch[i][0]
             if lam != 1.:
                 if use_cutmix:
-                    mixed = mixed.copy()  # don't want to modify the original while iterating
+                    mixed = mixed.clone()  # don't want to modify the original while iterating
                     mixed[:, yl:yh, xl:xh] = batch[j][0][:, yl:yh, xl:xh]
                 else:
                     mixed = mixed.astype(np.float32) * lam + batch[j][0].astype(np.float32) * (1 - lam)
