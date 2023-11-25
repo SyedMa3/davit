@@ -524,7 +524,6 @@ def main():
             dataset_dir=args.data_dir, 
             dataset_variant='cholect50',
             test_fold=1,
-            augmentation_list=None
             )
     
     dataset_train, dataset_eval, dataset_test = dataset.build()
